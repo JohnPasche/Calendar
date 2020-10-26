@@ -2,7 +2,7 @@
   --------------------------------------------------------------------------------------
   Fichier     : main.cpp
   Nom du labo : Laboratoire 03
-  Auteur(s)   : Pasche Jonathan
+  Auteur(s)   : Pasche Jonathann / Renaud Grégory
   Date        : 26.10.2020
   But         :
 
