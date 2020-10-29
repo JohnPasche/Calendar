@@ -17,7 +17,7 @@
 #include <string>
 
 #define VIDER_BUFFER   cin.clear();\
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n')
+                       cin.ignore(numeric_limits<streamsize>::max(), '\n')
 
 #define RECUPERE_NOM_JOURS_DU_MOIS   switch(moisCourrant) \
                                     {\
@@ -81,7 +81,7 @@
                                     cout << "L";\
                                     break;\
                                  case  enumJours::Mardi:\
-                                 case   enumJours::Mercredi:\
+                                 case  enumJours::Mercredi:\
                                     cout << "M";\
                                     break;\
                                  case  enumJours::Jeudi:\
@@ -138,23 +138,24 @@ int main() {
 	/*********************************************/
 
 	//Constantes
-	const int NB_MOIS_PAR_AN = 12;
-	const int NB_JOURS_PAR_SEMAINE = 7;
+	const int 	NB_MOIS_PAR_AN = 12;
+	const int 	NB_JOURS_PAR_SEMAINE = 7;
 
-	const int ANNEE_MIN = 1900;
-	const int ANNEE_MAX = 2100;
+	const int 	ANNEE_MIN = 1900;
+	const int 	ANNEE_MAX = 2100;
 
-	const int TAILLE_CASE = 2;
+	const int 	TAILLE_CASE = 2;
+	const char 	SEPARATEUR = ' ';
 
 	//Variables
-	char continuer = 'O';
-	bool saisieValidee;
-	int nbJoursMoisCourrant;
-	string nomMoisCourrant;
-	int dernierJourDuMois = 0;
-	int postitionJourSemaine;
-	int anneeChoisie;
-	int jour;
+	char 	 	continuer;
+	bool 	 	saisieValidee;
+	int 	 	nbJoursMoisCourrant;
+	string 	nomMoisCourrant;
+	int 		dernierJourDuMois = 0;
+	int 		postitionJourSemaine;
+	int 		anneeChoisie;
+	int 		jour;
 
 	/*********************************************/
 	//Affichage de l'entete
@@ -185,7 +186,9 @@ int main() {
 		/**************************************************/
 
 
-		/*********************************************************************/
+		/***************************************************/
+		// Affichage des calendriers
+		/***************************************************/
 		// Pour chaque mois
 		for (int m = 1; m <= NB_MOIS_PAR_AN; m++) {
 			enumMois moisCourrant = enumMois(m);
@@ -201,7 +204,7 @@ int main() {
 				enumJours nomJour = enumJours(j);
 				cout << setw(TAILLE_CASE);
 				AFFICHE_LETTRE_JOUR;
-				cout << " ";
+				cout << SEPARATEUR;
 			}
 			cout << endl;
 
@@ -215,7 +218,7 @@ int main() {
 					postitionJourSemaine++; // On decale le pointeur de jour
 					jour++;
 				}
-				cout << " ";
+				cout << SEPARATEUR;
 
 				if (!(c % NB_JOURS_PAR_SEMAINE)) {
 					postitionJourSemaine = 0;
@@ -225,8 +228,8 @@ int main() {
 			dernierJourDuMois = postitionJourSemaine;
 			cout << endl << endl;
 		}
+		/*****************************************************/
 
-		/*********************************************************************/
 		/****************************************************/
 		// Demande de saisie si l'utilisateur veux recommencer
 		/****************************************************/
@@ -235,7 +238,7 @@ int main() {
 			cout << "voulez-vous recommencer [O/N] ";
 			cin >> continuer;
 			if (cin.fail() || (continuer != 'O' && continuer != 'N')) {
-				cout << endl << "/!\\ recommencer" << endl;
+				cout << endl << "/!\\ Recommencer" << endl;
 			} else {
 				saisieValidee = 1;
 			}
