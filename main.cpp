@@ -13,78 +13,75 @@
 */
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 #include <string>
 
-#define VIDER_BUFFER   cin.ignore(numeric_limits<streamsize>::max(), '\n')
-#define ERREUR_SAISIE   cout << "Une erreur de saisie est survenue" << endl \
-                        << endl << "Presser ENTER pour quitter"; \
-                        VIDER_BUFFER; cin.get(); return EXIT_SUCCESS
+#define VIDER_BUFFER   cin.clear();\
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n')
 
-#define AFFICHE_NOM_DU_MOIS   switch(mois) \
-                              {\
-                                 case enumMois::Janvier:\
-                                    cout << "Janvier"; \
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Fevrier:\
-                                    cout << "Fevrier";\
-                                    nbJours = (anneeChoisie%400==0)||((anneeChoisie%4==0) && (anneeChoisie%100!=0)) ? 29 : 30 ;\
-                                    break;\
-                                 case  enumMois::Mars:\
-                                    cout << "Mars";\
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Avril:\
-                                    cout << "Avril";  \
-                                    nbJours = 30;\
-                                    break;\
-                                 case  enumMois::Mai:\
-                                    cout << "Mai";\
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Juin:\
-                                    cout << "Juin"; \
-                                    nbJours = 30;\
-                                    break;\
-                                 case  enumMois::Juillet:\
-                                    cout << "Juillet";\
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Aout:\
-                                    cout << "Aout";\
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Septembre:\
-                                    cout << "Septembre";\
-                                    nbJours = 30;\
-                                    break;\
-                                 case  enumMois::Octobre:\
-                                    cout << "Octobre"; \
-                                    nbJours = 31;\
-                                    break;\
-                                 case  enumMois::Novembre:\
-                                    cout << "Novembre"; \
-                                    nbJours = 30;\
-                                    break;\
-                                 case  enumMois::Decembre:\
-                                    cout << "Decembre";\
-                                    nbJours = 31;\
-                                    break;\
-                                 default:\
-                                    cout << "42 Error";           \
-                                    nbJours = 0;\
-                                    break;\
-                              }
+#define RECUPERE_NOM_JOURS_DU_MOIS   switch(moisCourrant) \
+                                    {\
+                                       case enumMois::Janvier:\
+                                          nomMoisCourrant = "Janvier"; \
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Fevrier:\
+                                          nomMoisCourrant = "Fevrier";\
+                                          nbJoursMoisCourrant = (anneeChoisie%400==0)||((anneeChoisie%4==0) && (anneeChoisie%100!=0)) ? 29 : 28 ;\
+                                          break;\
+                                       case  enumMois::Mars:\
+                                          nomMoisCourrant = "Mars";\
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Avril:\
+                                          nomMoisCourrant = "Avril";  \
+                                          nbJoursMoisCourrant = 30;\
+                                          break;\
+                                       case  enumMois::Mai:\
+                                          nomMoisCourrant = "Mai";\
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Juin:\
+                                          nomMoisCourrant = "Juin"; \
+                                          nbJoursMoisCourrant = 30;\
+                                          break;\
+                                       case  enumMois::Juillet:\
+                                          nomMoisCourrant = "Juillet";\
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Aout:\
+                                          nomMoisCourrant = "Aout";\
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Septembre:\
+                                          nomMoisCourrant = "Septembre";\
+                                          nbJoursMoisCourrant = 30;\
+                                          break;\
+                                       case  enumMois::Octobre:\
+                                          nomMoisCourrant = "Octobre"; \
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       case  enumMois::Novembre:\
+                                          nomMoisCourrant = "Novembre"; \
+                                          nbJoursMoisCourrant = 30;\
+                                          break;\
+                                       case  enumMois::Decembre:\
+                                          nomMoisCourrant = "Decembre";\
+                                          nbJoursMoisCourrant = 31;\
+                                          break;\
+                                       default:\
+                                          nomMoisCourrant = "42 Error";\
+                                          nbJoursMoisCourrant = 42;\
+                                          break;\
+                                    }
 
 #define AFFICHE_LETTRE_JOUR   switch(nomJour) \
                               {\
-                                 case enumJours::Lundi:\
+                                 case   enumJours::Lundi:\
                                     cout << "L";\
                                     break;\
                                  case  enumJours::Mardi:\
-                                    cout << "M";\
-                                    break;\
-                                 case  enumJours::Mercredi:\
+                                 case   enumJours::Mercredi:\
                                     cout << "M";\
                                     break;\
                                  case  enumJours::Jeudi:\
@@ -106,6 +103,9 @@
 
 using namespace std;
 
+/*******************************************/
+// Declaration des enums
+/*******************************************/
 enum class enumJours {
 	Lundi = 1,
 	Mardi,
@@ -115,6 +115,7 @@ enum class enumJours {
 	Samedi,
 	Dimanche
 };
+
 enum class enumMois {
 	Janvier = 1,
 	Fevrier,
@@ -133,13 +134,23 @@ enum class enumMois {
 
 int main() {
 	/*********************************************/
-	//Initialisation des Variables et Constantes
+	//Initialisation des Variables et constantes
 	/*********************************************/
 
-	//Initalisation et declaration des variables de saisie
+	//Constantes
+	const int NB_MOIS_PAR_AN = 12;
+	const int NB_JOURS_PAR_SEMAINE = 7;
+
+	const int ANNEE_MIN = 1900;
+	const int ANNEE_MAX = 2100;
+
+	const int TAILLE_CASE = 2;
+
+	//Variables
 	char continuer = 'O';
-	bool saisieValidee = 0;
-	int nbJours;
+	bool saisieValidee;
+	int nbJoursMoisCourrant;
+	string nomMoisCourrant;
 	int dernierJourDuMois = 0;
 	int postitionJourSemaine;
 	int anneeChoisie;
@@ -150,7 +161,7 @@ int main() {
 	/*********************************************/
 
 	cout << "Bonjour," << endl
-		  << "Un programme qui affiche un calendrier annuel" << endl;
+		  << "Je suis un programme qui affiche un calendrier annuel pour une annee donnee" << endl;
 
 	/*****************************************/
 	// Demande de saisie des valeurs
@@ -161,52 +172,52 @@ int main() {
 		/*****************************************/
 		do {
 			saisieValidee = 0;
-			cout << "Entrer une valeur [1900-2100] :";
+			cout << "Entrer une valeur [" << ANNEE_MIN << "-" << ANNEE_MAX << "] :";
 			cin >> anneeChoisie;
-			VIDER_BUFFER;
-			if (cin.fail() || anneeChoisie < 1900 || anneeChoisie > 2100) {
+
+			if (cin.fail() || (anneeChoisie < ANNEE_MIN || anneeChoisie > ANNEE_MAX)) {
 				cout << endl << "/!\\ Recommencer" << endl;
 			} else {
 				saisieValidee = 1;
 			}
-			cin.clear();
+			VIDER_BUFFER;
 		} while (!saisieValidee);
 		/**************************************************/
 
 
 		/*********************************************************************/
 		// Pour chaque mois
-		for (int m = 1; m <= 12; m++) {
-			enumMois mois = enumMois(m);
-			AFFICHE_NOM_DU_MOIS;
-			cout << " " << anneeChoisie << endl;
+		for (int m = 1; m <= NB_MOIS_PAR_AN; m++) {
+			enumMois moisCourrant = enumMois(m);
+			RECUPERE_NOM_JOURS_DU_MOIS;
+			cout << nomMoisCourrant << " " << anneeChoisie << endl;
 
 			//Set de la position du jour de la semaine du nouveau mois
 			postitionJourSemaine = dernierJourDuMois + 1;
 			jour = 1;
 
 			//Liste des initiales de jours
-			for (int j = 1; j <= 7; j++) {
+			for (int j = 1; j <= NB_JOURS_PAR_SEMAINE; j++) {
 				enumJours nomJour = enumJours(j);
-				cout << setw(2);
+				cout << setw(TAILLE_CASE);
 				AFFICHE_LETTRE_JOUR;
 				cout << " ";
 			}
 			cout << endl;
 
 			//Pour chaque case du calendrier du mois
-			for (int c = 1; c <= nbJours + dernierJourDuMois; c++) {
+			for (int c = 1; c <= nbJoursMoisCourrant + dernierJourDuMois; c++) {
 				//Affiche vide si jour dans l'ancien mois
 				if (c <= dernierJourDuMois) {
-					cout << setw(2) << " ";
+					cout << setw(TAILLE_CASE) << " ";
 				} else {
-					cout << setw(2) << jour;
+					cout << setw(TAILLE_CASE) << jour;
 					postitionJourSemaine++; // On decale le pointeur de jour
 					jour++;
 				}
 				cout << " ";
 
-				if (!(c % 7)) {
+				if (!(c % NB_JOURS_PAR_SEMAINE)) {
 					postitionJourSemaine = 0;
 					cout << endl;
 				}
@@ -223,13 +234,12 @@ int main() {
 			saisieValidee = 0;
 			cout << "voulez-vous recommencer [O/N] ";
 			cin >> continuer;
-			VIDER_BUFFER;
 			if (cin.fail() || (continuer != 'O' && continuer != 'N')) {
 				cout << endl << "/!\\ recommencer" << endl;
 			} else {
 				saisieValidee = 1;
 			}
-			cin.clear();
+			VIDER_BUFFER;
 		} while (!saisieValidee);
 	} while (continuer != 'N');
 
